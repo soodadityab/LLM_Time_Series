@@ -1,0 +1,69 @@
+{
+  "text_to_data_manipulation.generate_data_manipulation": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "data_description": "This dataset contains Tesla stock data from 2016 to 2021. It includes columns such as Date, Open, High, Low, Close, Adjusted Close, and Volume.",
+        "graph_description": "Plot showing the relationship between the opening and closing values of Tesla stock for the training dataset.",
+        "rationale": "generate the data manipulation code. We need to import the necessary libraries, load the dataset, and then manipulate the data to prepare it for plotting. We can use the pandas library to load and manipulate the data, and the matplotlib library to create the plot.",
+        "data_manipulation_code": "```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the dataset\ndf = pd.read_csv('tesla_stock_data.csv')\n\n# Select the relevant columns\ndf = df[['Date', 'Open', 'Close']]\n\n# Convert the Date column to datetime format\ndf['Date'] = pd.to_datetime(df['Date'])\n\n# Set the Date column as the index\ndf.set_index('Date', inplace=True)\n\n# Plot the opening and closing values\nplt.figure(figsize=(10, 6))\nplt.plot(df['Open'], label='Open')\nplt.plot(df['Close'], label='Close')\nplt.xlabel('Date')\nplt.ylabel('Price (USD)')\nplt.title('Tesla Stock Opening and Closing Values')\nplt.legend()\nplt.show()\n```\nThis code loads the dataset, selects the relevant columns, converts the Date column to datetime format, sets the Date column as the index, and plots the opening and closing values of Tesla stock."
+      },
+      {
+        "data_description": "Fields: sepal_length (float), sepal_width (float), petal_length (float), petal_width (float), species (string). Format: CSV",
+        "graph_description": "Scatter plot of sepal length vs sepal width, with a new column for sepal area.",
+        "graph": "\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load the dataset\niris = sns.load_dataset('iris')\n\n# Data preprocessing\niris['sepal_area'] = iris['sepal_length'] * iris['sepal_width']\n\n# Plotting\nsns.scatterplot(data=iris, x='sepal_length', y='sepal_width', hue='species', size='sepal_area', sizes=(20, 200))\nplt.title('Sepal Length vs Sepal Width by Species')\nplt.show()\n    "
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Scatter plot of the unique number of athletes in each country, color-coded by sport.",
+        "graph": "\nimport pandas as pd\nimport plotly.express as px\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Scatter plot of the unique number of athletes in each country, color-coded by sport\nna_st = df.groupby(['Nationality', 'Sport'])['Name'].count().reset_index().rename(columns={'Name': 'NameCount'})\nfig = px.scatter(na_st, x='Nationality', y='NameCount', color='Sport', size='NameCount', title='Unique number of Athletes in each country')\nfig.update_layout(xaxis={'categoryorder': 'total descending'})\nfig.show()\n    "
+      },
+      {
+        "data_description": "Fields: Country (string), Year (integer), Status (string), Life expectancy (float), Adult Mortality (float), Infant deaths (integer), Alcohol (float), Percentage expenditure (float), Hepatitis B (float), Measles (integer), BMI (float), Under-five deaths (integer), Polio (float), Total expenditure (float), Diphtheria (float), HIV\/AIDS (float), GDP (float), Population (float), Thinness 1-19 years (float), Thinness 5-9 years (float), Income composition of resources (float), Schooling (float). Format: CSV",
+        "graph_description": "Correlation matrix to show relationships between different numerical features.",
+        "graph": "\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the dataset\ndf1 = pd.read_csv('..\/input\/Life Expectancy Data.csv', delimiter=',', nrows=1000)\ndf1.dataframeName = 'Life Expectancy Data.csv'\n\n# Correlation matrix\ndef plotCorrelationMatrix(df, graphWidth):\n    filename = df.dataframeName\n    df = df.dropna('columns')  # drop columns with NaN\n    df = df[[col for col in df if df[col].nunique() > 1]]  # keep columns where there are more than 1 unique values\n    if df.shape[1] < 2:\n        print(f'No correlation plots shown: The number of non-NaN or constant columns ({df.shape[1]}) is less than 2')\n        return\n    corr = df.corr()\n    plt.figure(num=None, figsize=(graphWidth, graphWidth), dpi=80, facecolor='w', edgecolor='k')\n    corrMat = plt.matshow(corr, fignum=1)\n    plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)\n    plt.yticks(range(len(corr.columns)), corr.columns)\n    plt.gca().xaxis.tick_bottom()\n    plt.colorbar(corrMat)\n    plt.title(f'Correlation Matrix for {filename}', fontsize=15)\n    plt.show()\n\n# Call the function to plot the correlation matrix\nplotCorrelationMatrix(df1, 8)\n    "
+      }
+    ],
+    "signature_instructions": "Generate data manipulation code from data and target graph descriptions",
+    "signature_prefix": "Data Manipulation Code:",
+    "extended_signature_instructions": "Generate data manipulation code from data and target graph descriptions",
+    "extended_signature_prefix": "Data Manipulation Code:"
+  },
+  "text_to_graph_code.generate_graph_code": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "graph_description": "Plot showing the relationship between the opening and closing values of Tesla stock for the training dataset.",
+        "data_description": "This dataset contains Tesla stock data from 2016 to 2021. It includes columns such as Date, Open, High, Low, Close, Adjusted Close, and Volume.",
+        "data_manipulation_code": "```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the dataset\ndf = pd.read_csv('tesla_stock_data.csv')\n\n# Select the relevant columns\ndf = df[['Date', 'Open', 'Close']]\n\n# Convert the Date column to datetime format\ndf['Date'] = pd.to_datetime(df['Date'])\n\n# Set the Date column as the index\ndf.set_index('Date', inplace=True)\n\n# Plot the opening and closing values\nplt.figure(figsize=(10, 6))\nplt.plot(df['Open'], label='Open')\nplt.plot(df['Close'], label='Close')\nplt.xlabel('Date')\nplt.ylabel('Price (USD)')\nplt.title('Tesla Stock Opening and Closing Values')\nplt.legend()\nplt.show()\n```\nThis code loads the dataset, selects the relevant columns, converts the Date column to datetime format, sets the Date column as the index, and plots the opening and closing values of Tesla stock.",
+        "rationale": "produce the graph code. We first need to load the dataset using pandas. Then, we select the relevant columns, which are Date, Open, and Close. We convert the Date column to datetime format and set it as the index. Finally, we use matplotlib to plot the opening and closing values of Tesla stock.",
+        "graph_code": "The graph code is already provided in the Data Manipulation Code section. It generates a line plot showing the relationship between the opening and closing values of Tesla stock for the training dataset."
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Scatter plot of the unique number of athletes in each country, color-coded by sport.",
+        "graph": "\nimport pandas as pd\nimport plotly.express as px\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Scatter plot of the unique number of athletes in each country, color-coded by sport\nna_st = df.groupby(['Nationality', 'Sport'])['Name'].count().reset_index().rename(columns={'Name': 'NameCount'})\nfig = px.scatter(na_st, x='Nationality', y='NameCount', color='Sport', size='NameCount', title='Unique number of Athletes in each country')\nfig.update_layout(xaxis={'categoryorder': 'total descending'})\nfig.show()\n    "
+      },
+      {
+        "data_description": "Fields: Country (string), Year (integer), Status (string), Life expectancy (float), Adult Mortality (float), Infant deaths (integer), Alcohol (float), Percentage expenditure (float), Hepatitis B (float), Measles (integer), BMI (float), Under-five deaths (integer), Polio (float), Total expenditure (float), Diphtheria (float), HIV\/AIDS (float), GDP (float), Population (float), Thinness 1-19 years (float), Thinness 5-9 years (float), Income composition of resources (float), Schooling (float). Format: CSV",
+        "graph_description": "Correlation matrix to show relationships between different numerical features.",
+        "graph": "\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the dataset\ndf1 = pd.read_csv('..\/input\/Life Expectancy Data.csv', delimiter=',', nrows=1000)\ndf1.dataframeName = 'Life Expectancy Data.csv'\n\n# Correlation matrix\ndef plotCorrelationMatrix(df, graphWidth):\n    filename = df.dataframeName\n    df = df.dropna('columns')  # drop columns with NaN\n    df = df[[col for col in df if df[col].nunique() > 1]]  # keep columns where there are more than 1 unique values\n    if df.shape[1] < 2:\n        print(f'No correlation plots shown: The number of non-NaN or constant columns ({df.shape[1]}) is less than 2')\n        return\n    corr = df.corr()\n    plt.figure(num=None, figsize=(graphWidth, graphWidth), dpi=80, facecolor='w', edgecolor='k')\n    corrMat = plt.matshow(corr, fignum=1)\n    plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)\n    plt.yticks(range(len(corr.columns)), corr.columns)\n    plt.gca().xaxis.tick_bottom()\n    plt.colorbar(corrMat)\n    plt.title(f'Correlation Matrix for {filename}', fontsize=15)\n    plt.show()\n\n# Call the function to plot the correlation matrix\nplotCorrelationMatrix(df1, 8)\n    "
+      },
+      {
+        "data_description": "Fields: sepal_length (float), sepal_width (float), petal_length (float), petal_width (float), species (string). Format: CSV",
+        "graph_description": "Scatter plot of sepal length vs sepal width, with a new column for sepal area.",
+        "graph": "\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load the dataset\niris = sns.load_dataset('iris')\n\n# Data preprocessing\niris['sepal_area'] = iris['sepal_length'] * iris['sepal_width']\n\n# Plotting\nsns.scatterplot(data=iris, x='sepal_length', y='sepal_width', hue='species', size='sepal_area', sizes=(20, 200))\nplt.title('Sepal Length vs Sepal Width by Species')\nplt.show()\n    "
+      }
+    ],
+    "signature_instructions": "Generate graph code from a given description and data",
+    "signature_prefix": "Graph Code:",
+    "extended_signature_instructions": "Generate graph code from a given description and data",
+    "extended_signature_prefix": "Graph Code:"
+  }
+}

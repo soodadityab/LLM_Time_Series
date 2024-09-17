@@ -1,0 +1,74 @@
+{
+  "text_to_data_manipulation.generate_data_manipulation": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "data_description": "Fields: Country\/Region (string), Confirmed (integer), Deaths (integer), Recovered (integer), Active (integer), New cases (integer), New deaths (integer), New recovered (integer), Deaths \/ 100 Cases (float), Recovered \/ 100 Cases (float), Deaths \/ 100 Recovered (float), Confirmed last week (integer), 1 week change (integer), 1 week % increase (float), WHO Region (string). Format: CSV.",
+        "graph_description": "Bar and pie charts showing the deaths grouped by WHO Regions.",
+        "rationale": "generate the data manipulation code. We need to import the necessary libraries, read the CSV file, and then manipulate the data to prepare it for the graph. We need to group the deaths by WHO Regions and calculate the total deaths for each region. We can use the pandas library to achieve this.",
+        "data_manipulation_code": "```\nimport pandas as pd\n\n# Read the CSV file\ndf = pd.read_csv('data.csv')\n\n# Group the deaths by WHO Regions and calculate the total deaths for each region\ndeaths_by_region = df.groupby('WHO Region')['Deaths'].sum()\n\n# Prepare the data for the bar chart\nbar_data = deaths_by_region.reset_index()\nbar_data.columns = ['WHO Region', 'Total Deaths']\n\n# Prepare the data for the pie chart\npie_data = bar_data['Total Deaths']\n```\nThis code reads the CSV file, groups the deaths by WHO Regions, and calculates the total deaths for each region. It then prepares the data for both the bar chart and the pie chart."
+      },
+      {
+        "augmented": true,
+        "data_description": "This dataset contains information about Netflix titles including movies and TV shows. It includes details such as title, director, cast, country, date added to Netflix, release year, rating, duration, genre(s), and description.",
+        "graph_description": "Countplot showing the distribution of ratings of Netflix titles.",
+        "rationale": "generate the data manipulation code. We need to import the necessary libraries, load the dataset, and then manipulate the data to prepare it for the graph. \n\nFirst, we import the necessary libraries, including pandas for data manipulation and seaborn for visualization. Then, we load the dataset into a pandas DataFrame. \n\nNext, we need to prepare the data for the countplot. Since we want to show the distribution of ratings, we need to count the number of titles for each rating. We can do this by using the value_counts function in pandas, which returns a Series containing counts of unique rows in the DataFrame.\n\nFinally, we can use seaborn's countplot function to create the graph, passing in the prepared data.",
+        "data_manipulation_code": "```\nimport pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load the dataset\nnetflix_data = pd.read_csv('netflix_titles.csv')\n\n# Prepare the data for the countplot\nrating_counts = netflix_data['rating'].value_counts()\n\n# Create the countplot\nplt.figure(figsize=(10,6))\nsns.countplot(x=rating_counts.index, y=rating_counts.values)\nplt.xlabel('Rating')\nplt.ylabel('Count')\nplt.title('Distribution of Ratings of Netflix Titles')\nplt.show()\n```"
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Bar plot of total earnings per country.",
+        "graph": "\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Bar plot of total earnings per country\ndf.groupby(\"Nationality\")[\"earnings ($ million)\"].sum().plot(kind=\"bar\")\nplt.title(\"Total Earning as per Country\")\nplt.show()\n    "
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Bar plot of Floyd Mayweather's earnings over the years.",
+        "graph": "\nimport pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Bar plot of Floyd Mayweather's earnings over the years\nfloyd_mayweather = df[df['Name'] == 'Floyd Mayweather']\nsns.catplot(x='Year', y='earnings ($ million)', kind='bar', data=floyd_mayweather)\nplt.title(\"Floyd Mayweather's Earnings\")\nplt.show()\n    "
+      }
+    ],
+    "signature_instructions": "Generate data manipulation code from data and target graph descriptions",
+    "signature_prefix": "Data Manipulation Code:",
+    "extended_signature_instructions": "Generate data manipulation code from data and target graph descriptions",
+    "extended_signature_prefix": "Data Manipulation Code:"
+  },
+  "text_to_graph_code.generate_graph_code": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "graph_description": "Bar and pie charts showing the deaths grouped by WHO Regions.",
+        "data_description": "Fields: Country\/Region (string), Confirmed (integer), Deaths (integer), Recovered (integer), Active (integer), New cases (integer), New deaths (integer), New recovered (integer), Deaths \/ 100 Cases (float), Recovered \/ 100 Cases (float), Deaths \/ 100 Recovered (float), Confirmed last week (integer), 1 week change (integer), 1 week % increase (float), WHO Region (string). Format: CSV.",
+        "data_manipulation_code": "```\nimport pandas as pd\n\n# Read the CSV file\ndf = pd.read_csv('data.csv')\n\n# Group the deaths by WHO Regions and calculate the total deaths for each region\ndeaths_by_region = df.groupby('WHO Region')['Deaths'].sum()\n\n# Prepare the data for the bar chart\nbar_data = deaths_by_region.reset_index()\nbar_data.columns = ['WHO Region', 'Total Deaths']\n\n# Prepare the data for the pie chart\npie_data = bar_data['Total Deaths']\n```\nThis code reads the CSV file, groups the deaths by WHO Regions, and calculates the total deaths for each region. It then prepares the data for both the bar chart and the pie chart.",
+        "rationale": "produce the graph code. We need to create a bar chart and a pie chart. The bar chart will show the total deaths for each WHO Region, and the pie chart will show the proportion of deaths for each WHO Region. We will use the matplotlib library to create these charts.",
+        "graph_code": "``` import matplotlib.pyplot as plt # Create the bar chart plt.figure(figsize=(10, 6)) plt.bar(bar_data['WHO Region'], bar_data['Total Deaths']) plt.xlabel('WHO Region') plt.ylabel('Total Deaths') plt.title('Total Deaths by WHO Region') plt.show() # Create the pie chart plt.figure(figsize=(8, 8)) plt.pie(pie_data, labels = bar_data['WHO Region'], autopct='%1.1f%%') plt.title('Proportion of Deaths by WHO Region') plt.show() ``` This code creates a bar chart and a pie chart using the prepared data. The bar chart shows the total deaths for each WHO Region, and the pie chart shows the proportion of deaths for each WHO Region."
+      },
+      {
+        "augmented": true,
+        "graph_description": "Countplot showing the distribution of ratings of Netflix titles.",
+        "data_description": "This dataset contains information about Netflix titles including movies and TV shows. It includes details such as title, director, cast, country, date added to Netflix, release year, rating, duration, genre(s), and description.",
+        "data_manipulation_code": "```\nimport pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load the dataset\nnetflix_data = pd.read_csv('netflix_titles.csv')\n\n# Prepare the data for the countplot\nrating_counts = netflix_data['rating'].value_counts()\n\n# Create the countplot\nplt.figure(figsize=(10,6))\nsns.countplot(x=rating_counts.index, y=rating_counts.values)\nplt.xlabel('Rating')\nplt.ylabel('Count')\nplt.title('Distribution of Ratings of Netflix Titles')\nplt.show()\n```",
+        "rationale": "produce the graph code. We first need to load the dataset using pandas. Then, we need to prepare the data for the countplot by counting the occurrences of each rating using the value_counts() function. After that, we can create the countplot using seaborn's countplot function, specifying the x-axis as the ratings and the y-axis as the counts. Finally, we can add labels and a title to the plot and display it using matplotlib's show function.",
+        "graph_code": "The graph code is already provided in the Data Manipulation Code section."
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Bar plot of total earnings per country.",
+        "graph": "\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Bar plot of total earnings per country\ndf.groupby(\"Nationality\")[\"earnings ($ million)\"].sum().plot(kind=\"bar\")\nplt.title(\"Total Earning as per Country\")\nplt.show()\n    "
+      },
+      {
+        "data_description": "Fields: S.NO (integer), Name (string), Nationality (string), Current Rank (integer), Previous Year Rank (string), Sport (string), Year (integer), earnings ($ million) (float). Format: CSV",
+        "graph_description": "Bar plot of Floyd Mayweather's earnings over the years.",
+        "graph": "\nimport pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Read the CSV file\ndf = pd.read_csv('\/kaggle\/input\/forbes-highest-paid-athletes-19902019\/Forbes Richest Atheletes (Forbes Richest Athletes 1990-2020).csv')\n\n# Bar plot of Floyd Mayweather's earnings over the years\nfloyd_mayweather = df[df['Name'] == 'Floyd Mayweather']\nsns.catplot(x='Year', y='earnings ($ million)', kind='bar', data=floyd_mayweather)\nplt.title(\"Floyd Mayweather's Earnings\")\nplt.show()\n    "
+      }
+    ],
+    "signature_instructions": "Generate graph code from a given description and data",
+    "signature_prefix": "Graph Code:",
+    "extended_signature_instructions": "Generate graph code from a given description and data",
+    "extended_signature_prefix": "Graph Code:"
+  }
+}
