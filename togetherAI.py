@@ -1,7 +1,7 @@
 import os
 from together import Together
 
-client = Together(api_key="35ba5bebf6288e43fdc8989965161592e3335d7067c772c0c6995cdc0e60cd88")
+client = Together(api_key="")
 
 conversation_history = []
 
